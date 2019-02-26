@@ -1,0 +1,32 @@
+/* .buttons {
+    display: flex;
+    justify-content:flex-end;
+} */
+
+.Link {
+    text-decoration: none;
+}
+
+.buttons {
+    display: flex;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.login {
+  align-items:flex-end;
+}
+
+.register {
+  flex-direction:flex-end;
+}
+
+
+.btn {
+  color: white;
+  text-decoration: none;
+}

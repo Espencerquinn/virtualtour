@@ -71,20 +71,18 @@ module.exports = {
         res.status(200).send({message: "How did you find this page?"})
         }
     },
-    updateUser: async (req, res) => {
-        const {
-        userFullname,
-        userEmail,
-        userphonenumber,
-        selectedUserId,  
-        } = req.body;
-        const db = req.app.get("db")
-        let [user] = await db.update_user([
-            userFullname,
-            userEmail,
-            userphonenumber,
-            selectedUserId
-        ]);
-        res.status(200).send(user);
-    }
+    updateUser: (req, res) => {
+        const db = req.app.get('db');
+        const id = req.params.id;
+        const {fullname, username, email, phonenumber} = req.body;
+        // let id = Number(id);
+        db.user.update_user([id, fullname, username, email, phonenumber])
+        .then(() => {
+            console.log('Edit User Complete')
+        })
+        .catch((err) => {
+            res.status(500).send('Update Error');
+            console.log(err);
+        })
+    },
 };

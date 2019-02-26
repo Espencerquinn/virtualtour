@@ -1,0 +1,50 @@
+$primary-color: #ffffff;
+$secondary-color: #ffd23c;
+
+.Header {
+    font-family: 'Roboto', sans-serif;
+    color: $primary-color;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    z-index: 2;
+
+}
+
+.vsc-controller{
+    display: none;
+}
+
+#controller {
+    
+}
+
+
+.videoTop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    background-attachment: scroll;
+    overflow: hidden;
+}
+
+.overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    background:#c0392b;
+    background:linear-gradient(to right, #c0392b, #8e44ad);
+    opacity: 0.5;
+}
+
+video1Tag {
+    z-index: -1;
+
+}

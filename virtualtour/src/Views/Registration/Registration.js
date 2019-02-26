@@ -19,7 +19,7 @@ class Registration extends Component {
         this.registerUser = this.registerUser.bind(this)
     }
 
-    getSignedRequest = ([file]) => {
+getSignedRequest = ([file]) => {
         console.log('hit')
         this.setState({ isUploading: true });
         // We are creating a file name that consists of a random string, and the name of the file that was just uploaded with the spaces removed and hyphens inserted instead. This is done using the .replace function with a specific regular expression. This will ensure that each file uploaded has a unique name which will prevent files from overwriting other files due to duplicate names.

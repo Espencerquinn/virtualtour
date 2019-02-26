@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import InputMask from "react-input-mask"
+import {Link} from 'react-router-dom'
 
 class UpdateUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '{user.id}',
             fullname: '',
             username: '',
             email: '',
@@ -17,8 +19,10 @@ class UpdateUser extends Component {
             selectedUserId: "",
             userEmail: "",
             userphonenumber: "",
-            Users: []
-        };
+            user: {}
+        }
+        this.updateUser = this.updateUser.bind(this)
+
     }
 
   componentDidMount(){
@@ -28,8 +32,8 @@ class UpdateUser extends Component {
   getUsers(){
     axios.get('/api/private/getUser')
         .then((res) => {
-          console.log(res.data)
-            this.setState({Users: res.data})
+          console.log("SESSION", res.data.user)
+            this.setState({user: res.data.user})
         })
         .catch(err => console.log("error:". err))
   }
@@ -89,7 +93,7 @@ handleSubmit() {
     .then(() => {
       axios.get("/api/users").then(res => {
         this.setState({
-          Users: res.data,
+          users: res.data,
           fullname: "",
           email: "",
           phonenumber: ""
@@ -112,27 +116,19 @@ editUserToggle(user) {
     });
 }
 
-async updateUser () {
-  let formattedPhoneNumber = this.formatPhoneNumber (
-    this.state.userPhoneNumber
-  );
-  if (formattedPhoneNumber) {
-    const {
-      userFullname,
-      userEmail,
-      userphonenumber,
-      selectedUserId
-    } = this.state;
-    await axios.put(`/api/user`, {
-      userFullname,
-      userEmail,
-      userphonenumber,
-      selectedUserId
-    });
-    this.getUsers();
-    this.endUpdateUser();
+ updateUser () {
+    console.log("updateusercheck",this.state.user.id)
+     axios.put(`/api/user/${this.state.user.id}`, {
+      fullname: this.state.fullname,
+      username: this.state.username,
+      phonenumber: this.state.phonenumber,
+      email:this.state.email
+    })
+    .then( (res) => {
+      console.log(this.state)
+    })
   }
-}
+
 
 async deleteUser(userId) {
   await axios.delete(`/api/user/${userId}`);
@@ -151,135 +147,26 @@ endUpdateUser(){
   })
 }
 
-handleInputChange = name => event => {
+handleFullnameUpdate(val){
   this.setState({
-    [name]: event.target.value,
-    errMsg:""
-  });
-};
+      fullname: val
+  })
+}
 
   render() {
-    console.log(this.state)
+    console.log("USER OBJECT:")
+    console.log(this.state.user)
+    const {user} = this.state
     return (
-      <div>
-        <div>
           
-          <div className="User-Dash">
-            {this.state.Users.map((user, index) => {
-              return (
-                <div className="UsersInfo" key={user.user_id}>
-                  <div className="UserInfoNum">{index + 1}</div>
-                  <input
-                    className="fullname"
-                    placeholder={`${user.user_fullname}`}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                    onChange={this.handleInputChange("userFullname")}
-                  />
-                  <input
-                    className="title"
-                    placeholder={`${user.user_last_name}`}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                    onChange={this.handleInputChange("userLastName")}
-                  />
-                  <InputMask
-                    mask="+1 (999) 999-9999"
-                    maskChar={null}
-                    className="title"
-                    placeholder={`${user.user_phone_number}`}
-                    onChange={this.handleInputChange("userPhoneNumber")}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                  />
-                  <input
-                    className="title"
-                    placeholder={`${user.user_email}`}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                    onChange={this.handleInputChange("userEmail")}
-                  />
-                  <input
-                    className="title"
-                    placeholder={`${user.default_location}`}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                    onChange={this.handleInputChange("userDefaultLocation")}
-                  />
-                  <input
-                    className="title"
-                    placeholder={`${user.user_title}`}
-                    disabled={
-                      !this.state.disabled &&
-                      this.state.selectedUserId === user.user_id
-                        ? ""
-                        : "disabled"
-                    }
-                    onChange={this.handleInputChange("userTitle")}
-                  />
-                  {this.state.disabled ? (
-                    <div className="edit_delete_container">
-                      <div
-                        className="edit_button_staff"
-                        onClick={e => this.editStaffToggle(user)}
-                      />
-                      <div
-                        className="delete_button_staff"
-                        onClick={() => this.deleteUser(user.user_id)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="edit_delete_container">
-                      <div
-                        className={
-                          this.state.selectedUserId === user.user_id
-                            ? "save_button_staff"
-                            : "blank"
-                        }
-                        onClick={() => this.updateUser()}
-                      />
-                      <div
-                        className={
-                          this.state.selectedUserId === user.user_id
-                            ? "cancel_button_staff"
-                            : "blank"
-                        }
-                        onClick={() => this.endUpdateUser()}
-                      />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
           <div>
-            <div className="staff_entry_container">
+            <div className="Update_User">
               <div />
               <input
-                className="staff_entry first"
-                onChange={e => this.setState({ Fullname: e.target.value })}
-                placeholder="Full Name"
-                value={this.state.Fullname}
+                className="fullname"
+                onChange={e => this.handleFullnameUpdate(e.target.value)}
+                placeholder={user.fullname}
+                value={this.state.fullname}
               />
               <input
                 className="staff_entry last"
@@ -320,12 +207,11 @@ handleInputChange = name => event => {
                 onClick={this.submitValidation}
               />
             </div>
-            <p style={{ color: "red", fontSize: "11px", fontFamily: "prompt" }}>
-              {this.state.errMsg}
-            </p>
+            <div className='updateUser-buttons'>
+                    <Link to='/'><button className='form-button' onClick={() => this.handleClear()}>Cancel</button></Link>
+                    <button className='form-button'onClick={() => this.updateUser()}>Save Changes</button>
+            </div>
           </div>
-        </div>
-      </div>
     );
   }
 }

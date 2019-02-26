@@ -1,0 +1,50 @@
+.salesmessage {
+
+}
+
+.salestext {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    position: absolute;
+    
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    z-index: 2;
+    display: table-cell;
+    vertical-align: middle;
+
+}
+
+
+
+.banner {
+    height: 40%;
+    width: 100%;
+    margin: auto; 
+    z-index: 1;
+    background:#000000;
+    // background:linear-gradient(to right, #c0392b, #8e44ad);
+    opacity: 0.75;
+    position: absolute;
+     margin: auto;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+
+}
+
+.video2Tag {
+    z-index: -1;
+
+}
+
+.sellmore-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    background-attachment: scroll;
+    overflow: hidden;
+}
