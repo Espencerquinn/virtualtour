@@ -1,21 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
+import LoginForm from '../../Components/Login Component/LoginForm'
 import './Login.scss';
-
-
 
 
 class Login extends Component {
@@ -44,16 +30,18 @@ class Login extends Component {
                     })
                 }
         
-    handleChange(prop, val) {
+    handleChange= (prop, val) => {
         this.setState({
             [prop]:val
         })
     }
-    login(){
+    login(e){
+        console.log('hit')
+        // e.preventdefault()
         const { username, password } = this.state;
         axios.post('/auth/login', {username, password})
             .then(res => {
-                this.props.updateUser(res.data)
+                // this.props.updateUser(res.data)
                 this.props.history.push('/private')
             })
             .catch(err => {
@@ -71,24 +59,18 @@ class Login extends Component {
           
 
         return (
-           
-                <div className='login-wrap'>
-                    <form class='form'>
-                    <input
-                        type= 'text'
-                        name= 'un'
-                        value={username}
-                        placeholder="Username"
-                        onChange={e => this.handleChange('username', e.target.value)}
-                    />   
-                    <input
-                        type='password'
-                        name='pw'
-                        value={password}
-                        onChange={e => this.handleChange('password', e.target.value)}
-                    /> 
-                    <a href="#"><p> Don't have an account? Register </p> </a>
-                    <button onClick={this.login}>Login</button>
+            
+            <div className='login-wrap'>
+                     <LoginForm
+                     loginFn={this.login}
+                     handleChangeFn={this.handleChange}
+                    //  username={this.user.username}
+                    //  password={this.user.password}
+                     />
+                    <form
+                       onsubmit={e => e.preventdefault()}
+                    >
+                    
                     </form>
                 </div>
                 

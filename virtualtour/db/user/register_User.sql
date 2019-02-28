@@ -1,12 +1,14 @@
 INSERT INTO vrusers (
-    fullname,
+    firstname,
+    lastname,
     username,
     email,
     phonenumber,
     password,
     url
 ) values (
-    ${fullname},
+    ${firstname},
+    ${lastname},
     ${username},
     ${email},
     ${phonenumber},

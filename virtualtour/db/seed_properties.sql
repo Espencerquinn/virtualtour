@@ -11,4 +11,4 @@ CREATE TABLE vrproperties (
 )
 
 INSERT INTO vrproperties (name, address, city, state, zip, price, vrlink)
-VALUES ('Test Property', '4257 S Marion', 'tempe', 'AZ', '85208', 250, 'heresthelink' )
+VALUES ('Test Property2', '2050 S Avoca', 'tempe', 'AZ', '85208', 250, 'heresthelink' )

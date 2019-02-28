@@ -3,12 +3,16 @@ import axios from 'axios';
 import { v4 as randomString } from 'uuid';
 import Dropzone from 'react-dropzone';
 import { GridLoader } from 'react-spinners';
+import { connect } from 'react-redux';
+import RegistrationForm from '../../Components/Registration/RegistrationForm'
+import {registerUser}  from '../../ducks/reducer'
 
 class Registration extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fullname: '',
+            firstname: '',
+            lastname: '',
             username: '',
             email: '',
             phonenumber:'',
@@ -78,7 +82,8 @@ registerUser(){
   console.log('hit register')
   axios.post('/api/registerUser',
   {
-    fullname:this.state.fullname,
+    firstname:this.state.firstname,
+    lastname:this.state.lastname,
     username: this.state.username,
     email: this.state.email,
     phonenumber: this.state.phonenumber,
@@ -126,14 +131,25 @@ registerUser(){
   
   
     render() {
-        const {url, isUploading, fullname, username, email, phonenumber, password } =this.state;
+        const {url, isUploading, firstname, lastname, username, email, phonenumber, password } =this.state;
         return (
-            <div className='Login'>
+          <div className='Login'>
+            <RegistrationForm
+              getSignedRequestFn={this.getSignedRequest}
+              handleChangeFn={this.handleChange}
+            />
                 <input
-                    value={fullname}
-                    onChange={e => this.handleChange('fullname', e.target.value)}
-                    placeholder= "full name"
+                    value={firstname}
+                    onChange={e => this.handleChange('firstname', e.target.value)}
+                    placeholder= "First Name"
+                    attrurl= {this.url}
+                    attrisUploading={this.isUploading}
                 /> 
+                <input
+                    value={lastname}
+                    onChange={e => this.handleChange('lastname', e.target.value)}
+                    placeholder= "Last Name"
+                />
                 <input
                     value={username}
                     onChange={e => this.handleChange('username', e.target.value)}
@@ -197,5 +213,9 @@ registerUser(){
     }
 }
 
+let mapDispatchToProps = {
+  registerUser
+}
 
-export default Registration
+
+export default connect (null, mapDispatchToProps)(Registration);

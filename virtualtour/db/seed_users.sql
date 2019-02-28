@@ -1,6 +1,7 @@
 CREATE TABLE vrusers (
     id serial primary key,
-    fullname varchar(30) not null unique,
+    firstname varchar(30) not null unique,
+    lastname varchar(30) not null unique,
     username varchar(200) not null, 
     email varchar(50),
     phonenumber varchar(10),
@@ -10,5 +11,5 @@ CREATE TABLE vrusers (
 )
 
 
-INSERT INTO vrusers (fullname, username, email, phonenumber, password, url, property_id)
-VALUES ('Spencer', 'spence', 'espencer.quinn@gmail.com', 4804031577, '$2a$10$kazwohngbMDL4Qcs36KBUelDGR0oRg7/CK5Jze7uMOSkmwbd8Bwjy',	 '1')
+INSERT INTO vrusers (firstname, lastname, username, email, phonenumber, password, url, property_id)
+VALUES ('Spencer', 'spence', 'quinn', 'espencer', 4804031577, '$2a$10$kazwohngbMDL4Qcs36KBUelDGR0oRg7/CK5Jze7uMOSkmwbd8Bwjy','1')

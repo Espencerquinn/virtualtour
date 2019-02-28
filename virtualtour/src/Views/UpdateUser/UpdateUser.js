@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import InputMask from "react-input-mask"
 import {Link} from 'react-router-dom'
+import UpdateProfile from '../../Components/Update Profile/UpdateProfile'
 
 class UpdateUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: '{user.id}',
-            fullname: '',
+            firstname: '',
+            fullname:'',
+            lastname:'',
             username: '',
             email: '',
             phonenumber:'',
@@ -21,7 +24,7 @@ class UpdateUser extends Component {
             userphonenumber: "",
             user: {}
         }
-        this.updateUser = this.updateUser.bind(this)
+        // this.updateUser = this.updateUser.bind(this)
 
     }
 
@@ -38,88 +41,12 @@ class UpdateUser extends Component {
         .catch(err => console.log("error:". err))
   }
 
-  formatPhoneNumber(phoneNum){
-    if (phoneNum) {
-      var formatted = phoneNum.replace(/\D/g, "");
-      if (formatted.length !== 11) {
-        this.setState({
-          errMsg: "Please enter in a valid phone number."
-        });
-        return null;
-      } else {
-        return `+${formatted}`;
-      }
-    } else {
-      this.setState({
-        errMsg: "Please enter a phone "
-      });
-        return null;
-    }
-  }
-
-  submitValidation = () => {
-    const {
-        fullname,
-        username,
-        email,
-        phonenumber,
-        password,
-    } = this.state;
-    if (
-        fullname &&
-        username &&
-        email &&
-        phonenumber &&
-        password 
-    ) {
-      this.handleSubmit();
-    } else {
-      this.setState({
-        errMsg: "Please complete all the fields."
-    });
-  }
-};
-
-handleSubmit() {
-  let formattedPhoneNumber = this.formatPhoneNumber(this.state.phonenumber)
-  if (formattedPhoneNumber) {
-    const {fullname, username, email, formattedPhoneNumber } = this.state
-    axios.post("/api/registerUser", {
-          fullname,
-          username, 
-          email,
-          formattedPhoneNumber
-        })
-    .then(() => {
-      axios.get("/api/users").then(res => {
-        this.setState({
-          users: res.data,
-          fullname: "",
-          email: "",
-          phonenumber: ""
-        });
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
-}
-
-editUserToggle(user) {
-    this.setState({
-      selectedUserId: user.user_id,
-      userFullname: user.user_fullname,
-      userEmail: user.user_userEmail,
-      userphonenumber: user.user_phonenumber,
-      disabled: !this.state.disabled
-    });
-}
 
  updateUser () {
     console.log("updateusercheck",this.state.user.id)
      axios.put(`/api/user/${this.state.user.id}`, {
-      fullname: this.state.fullname,
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
       username: this.state.username,
       phonenumber: this.state.phonenumber,
       email:this.state.email
@@ -130,26 +57,10 @@ editUserToggle(user) {
   }
 
 
-async deleteUser(userId) {
-  await axios.delete(`/api/user/${userId}`);
-    this.getUsers();
-    this.setState({
-      selectedUserId:"",
-      disabled: true
-    })
-}
 
-endUpdateUser(){
-  this.getUsers();
+handleChange= (prop, val) => {
   this.setState({
-    selectedUserId: "",
-    disabled: true
-  })
-}
-
-handleFullnameUpdate(val){
-  this.setState({
-      fullname: val
+      [prop]:val
   })
 }
 
@@ -162,25 +73,38 @@ handleFullnameUpdate(val){
           <div>
             <div className="Update_User">
               <div />
+              <UpdateProfile
+                key={user.id}
+                id={user.id}
+                userfirstname={user.firstname}
+                userlastname={user.lastname}
+                userusername={user.username}
+                userphonenumber={user.phonenumber}
+                useremail={user.email}
+                updateUserFn={this.updateUser}
+                userProfilePic={user.url}
+                handleChangeFn={this.handleChange}
+
+              />
               <input
                 className="fullname"
                 onChange={e => this.handleFullnameUpdate(e.target.value)}
-                placeholder={user.fullname}
-                value={this.state.fullname}
+                placeholder={user.firstname}
+                value={this.state.firstname}
               />
               <input
                 className="staff_entry last"
                 onChange={e => this.setState({ LastName: e.target.value })}
-                placeholder="Last Name"
-                value={this.state.LastName}
+                placeholder={user.lastname}
+                value={this.state.lastname}
               />
               <InputMask
                 className="staff_entry phone"
                 mask="+1 (999) 999-9999"
                 maskChar={null}
-                placeholder="Phone #"
-                value={this.state.PhoneNumber}
-                onChange={e => this.setState({ PhoneNumber: e.target.value })}
+                placeholder={user.phonenumber}
+                value={this.state.phonenumber}
+                onChange={e => this.setState({ phonenumber: e.target.value })}
               />
               <input
                 className="staff_entry email"

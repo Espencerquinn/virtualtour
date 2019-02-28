@@ -1,18 +1,21 @@
 const initialState ={
     id: '',
-    fullname: '',
+    firstname: '',
+    lastname: '',
     username: '',
     email:'',
     phonenumber: '',
-    url: ''
+    password: '',
+    isUploading: 'false',
+    url: 'http://via.placeholder.com/450x450'
 }
 
-const UPDATE_USER = 'UPDATE_USER';
+const CREATE_USER = 'CREATE_USER';
 
 //action builder 
-export function updateUser(userObj){
+export function registerUser(userObj){
     return {
-        type: UPDATE_USER,
+        type: CREATE_USER,
         payload: userObj
     }
 }
@@ -20,9 +23,9 @@ export function updateUser(userObj){
 export default function reducer (state = initialState, action) {
     const { type, payload } = action; 
     switch(type){
-        case UPDATE_USER:
-            const {id, fullname, username, } = payload;
-            return {...state, id, fullname, username};
+        case CREATE_USER:
+            const {firstname, lastname, username, email, phonenumber} = payload;
+            return {...state, firstname, lastname, username, email, phonenumber};
         default:
             return state;
     }

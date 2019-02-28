@@ -3,12 +3,12 @@ const bcrypt = require('bcryptjs')
 module.exports = {
     registerUser: async (req, res) => {
         try {
-        const {fullname, username, email, phonenumber, password, url } = req.body;
+        const {firstname, lastname, username, email, phonenumber, password, url } = req.body;
         const { session } = req;
         const db = req.app.get('db');
         var salt = bcrypt.genSaltSync(10); //test
         var hash = bcrypt.hashSync(password, salt);
-        let newUser = await db.user.register_User({fullname, username, email, phonenumber, password: hash, url })
+        let newUser = await db.user.register_User({firstname,lastname, username, email, phonenumber, password: hash, url })
         console.log(newUser)
         newUser = newUser[0];
         console.log('newuser', newUser)
@@ -71,12 +71,16 @@ module.exports = {
         res.status(200).send({message: "How did you find this page?"})
         }
     },
+    logout: (req, res) => {
+        req.session.destroy();
+        res.sendStatus(200)
+    },
     updateUser: (req, res) => {
         const db = req.app.get('db');
         const id = req.params.id;
-        const {fullname, username, email, phonenumber} = req.body;
+        const {firstname, lastname, username, email, phonenumber} = req.body;
         // let id = Number(id);
-        db.user.update_user([id, fullname, username, email, phonenumber])
+        db.user.update_user([id, firstname, lastname, username, email, phonenumber])
         .then(() => {
             console.log('Edit User Complete')
         })

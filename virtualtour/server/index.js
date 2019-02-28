@@ -96,3 +96,5 @@ app.post('/api/registerUser', ctrl.registerUser)
 app.post('/auth/login', ctrl.login);
 app.post('/auth/logout', ctrl.logout);
 app.get('/api/user', ctrl.getUser);
+
+//logout
